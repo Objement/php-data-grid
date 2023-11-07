@@ -1,0 +1,35 @@
+{% if rowOption.isVisible(row) == true %}
+    {% if rowOption.isEnabled(row) == false %}
+        <span class="data-grid__column__option-link" {% if rowOption.getTooltip() is not empty %}title="{{ rowOption.getTooltip() }}"{% endif %}>
+            <span aria-hidden="true" style="opacity: .6;" class="fa-sharp fa-solid fa-{{ rowOption.getIcon() }}" title="{{ rowOption.getCaption() }}"></span>
+        </span>
+    {% else %}
+
+        {% set confirmationOptions = rowOption.confirmationOptions %}
+
+        <a class="data-grid__column__option-link{% if rowOption.isConfirmationEnabled %} data-grid__column__option-link--confirmation-needed{% endif %}"
+                {% if rowOption.isConfirmationEnabled %}
+                    href="javascript:void(0);"
+                    data-href="{{ rowOption.getLink(row) }}"
+                {% else %}
+                    href="{{ rowOption.getLink(row) }}"
+                {% endif %}
+
+                {% if rowOption.getTooltip() is not empty %}
+                    title="{{ rowOption.getTooltip() }}"
+                {% endif %}
+
+                {% if rowOption.isConfirmationEnabled %}
+
+                    data-confirmation-type="{{ confirmationOptions.type.value | escape('html_attr') }}"
+                    data-confirmation-text="{{ confirmationOptions.text | escape('html_attr') }}"
+
+                    {% if confirmationOptions.type.value == 'critical' %}
+                        data-confirmation-matching-text="{{ confirmationOptions.criticalMatchingText(row) | escape('html_attr') }}"
+                    {% endif %}
+                {% endif %}
+        >
+            <span aria-hidden="true" class="fa-sharp fa-solid fa-{{ rowOption.getIcon() }}" title="{{ rowOption.getCaption() }}"></span>
+        </a>
+    {% endif %}
+{% endif %}

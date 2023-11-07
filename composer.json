@@ -1,0 +1,36 @@
+{
+  "name": "objement/php-mvc-base-data-grid-module",
+  "description": "PHP server side rendered data grid with paging, filter and sorting.",
+  "minimum-stability": "dev",
+  "license": "BSD-3-Clause",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Kevin Glier",
+      "email": "github@objement.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/Objement/php-utils.git"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "objement/php-utils": ">=0.1",
+    "twig/twig": "~v3.7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Objement\\OmPhpDataGrid\\": "source/",
+      "Objement\\OmPhpDataGridTests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit tests"
+  }
+}

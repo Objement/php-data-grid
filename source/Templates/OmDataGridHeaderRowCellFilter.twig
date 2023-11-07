@@ -1,0 +1,19 @@
+{% set identifier = "D" ~ dataGridId ~ "C" ~ dataGridColumnIndex %}
+
+{% set columnOperationFieldName = "d" ~ dataGridId ~ "c" ~ dataGridColumnIndex ~ "_o" %}
+{% set columnCriteriaFieldName = "d" ~ dataGridId ~ "c" ~ dataGridColumnIndex ~ "_c" %}
+
+{% set currentFilterOperation = httpGetRequestHandler.isSet(columnOperationFieldName) ? httpGetRequestHandler.getString(columnOperationFieldName) : "" %}
+{% set currentFilterCriteria = httpGetRequestHandler.isSet(columnCriteriaFieldName) ? httpGetRequestHandler.getString(columnCriteriaFieldName) : "" %}
+
+<div class="d-flex align-items-center dropdown">
+    <span>{{ column.caption }}</span>
+    <button role="button" aria-expanded="false" data-toggle="dropdown"
+            data-column-index="{{ dataGridColumnIndex }}"
+            data-column-type="{{ column.type }}"
+            data-current-operation="{{ currentFilterOperation | default('') | escape('html_attr') }}"
+            data-current-criteria="{{ currentFilterCriteria | default('') | escape('html_attr') }}"
+            class="data-grid__header-cell__filter-button btn btn-sm d-flex flex-row justify-content-center align-items-center btn border-0">
+        <span class="fa fa-filter" {{ currentFilterCriteria is not empty ? 'style="fill: #0d6efd; color: #0d6efd;"' : "" }} aria-hidden="true"></span>
+    </button>
+</div>

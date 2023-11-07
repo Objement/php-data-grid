@@ -1,0 +1,130 @@
+{% set optionColumEnabled = gridDefinition.rowOptions != null and gridDefinition.rowOptions|length > 0 %}
+{% set columnCount = (gridDefinition.columns|length) + (optionColumEnabled == true ? 1 : 0) %}
+{% set visibleColumns = gridDefinition.visibleColumns %}
+
+{% if rows is empty and isFilterActive == false %}
+    <p>Es sind derzeit keine Einträge vorhanden.</p>
+{% else %}
+
+    <div class="data-grid__container{{ isFilterActive ? ' data-grid__container--filter-active' : '' }}" data-data-grid-id="{{ dataGridId }}">
+        {% if rows is not empty or isFilterActive %}
+            {% include 'OmDataGridHeader.twig' %}
+        {% endif %}
+
+        <div class="table-responsive">
+
+            <table class="table table-sm data-grid" data-data-grid-id="{{ dataGridId }}">
+                <thead>
+                <tr>
+                    {% for column in visibleColumns %}
+                        <th class="data-grid__column data-grid__column--type-{{ column.type }} data-grid__column--name-{{ column.name }}">
+                            {% if column.isFilterable %}
+                                {% set dataGridColumnIndex = loop.index0 %}
+                                {% include 'OmDataGridHeaderRowCellFilter.twig' %}
+                            {% else %}
+                                {{ column.caption }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+
+                    {% if gridDefinition.rowOptions != null and gridDefinition.rowOptions|length > 0 %}
+                        <th class="data-grid__column data-grid__column--options"></th>
+                    {% endif %}
+                </tr>
+                </thead>
+                {% if rows is empty %}
+                    <tbody>
+                    <tr>
+                        <td colspan="{{ columnCount }}" class="text-center">Es wurden keine Einträge gefunden.</td>
+                    </tr>
+                    </tbody>
+                {% else %}
+                    {% for row in rows %}
+                        {% set rowIndex = loop.index0 %}
+                        {% set hasDetailContent = gridDefinition.getDetailContent(row) != null %}
+                        <tbody class="data-grid__row{{ gridDefinition.isDetailContentExpanded(row) ? ' data-grid__row--expanded' : '' }}">
+                        <tr{{ gridDefinition.getRowAttributeHtml(row) | raw }}>
+                            {% for column in visibleColumns %}
+                                <td class="data-grid__column data-grid__column--type-{{ column.type }} data-grid__column--name-{{ column.name }}">
+                                    {% if column.type == 'custom_template' %}
+                                        {% include column.customTemplatePath with column %}
+                                    {% else %}
+                                        {{ column.getFormattedValueHtml(dataSource.getColumnValue(rowIndex, column)) | raw }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+
+                            {% if gridDefinition.rowOptions != null and gridDefinition.rowOptions|length > 0 %}
+                                <td class="data-grid__column data-grid__column--options">
+                                    <div class="data-grid__column__options-container">
+                                        {% for rowOption in gridDefinition.rowOptions %}
+                                            {% include 'OmDataGridRowOption.twig' %}
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% if hasDetailContent %}
+                            <tr{{ gridDefinition.getRowAttributeHtml(row) | raw }}>
+                                <td colspan="{{ columnCount }}">
+                                    {{ gridDefinition.getDetailContent(row) | raw }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    {% endfor %}
+                {% endif %}
+            </table>
+
+        </div>
+
+        {% if gridDefinition.isPagingEnabled %}
+            {% include 'OmDataGridPaging.twig' %}
+        {% endif %}
+
+    </div>
+
+    <form id="dataGrid{{ dataGridId }}FilterForm" method="get">
+        {% set searchQueryFieldName = "d" ~ dataGridId ~ "q" %}
+        {% set specialFilterFieldName = "d" ~ dataGridId ~ "sf" %}
+
+        {% if httpGetRequestHandler.isSet(searchQueryFieldName) %}
+            <input type="hidden" name="{{ searchQueryFieldName }}" value="{{ httpGetRequestHandler.getString(searchQueryFieldName) | escape('html_attr') }}">
+        {% endif %}
+
+        {% if httpGetRequestHandler.isSet(specialFilterFieldName) %}
+            <input type="hidden" name="{{ specialFilterFieldName }}" value="{{ httpGetRequestHandler.getString(specialFilterFieldName) | escape('html_attr') }}">
+        {% endif %}
+
+        {% for column in visibleColumns %}
+            {% if column.isFilterable %}
+                {% set dataGridColumnIndex = loop.index0 %}
+
+                {% set columnOperationFieldName = "d" ~ dataGridId ~ "c" ~ dataGridColumnIndex ~ "_o" %}
+                {% set columnCriteriaFieldName = "d" ~ dataGridId ~ "c" ~ dataGridColumnIndex ~ "_c" %}
+
+                {% if httpGetRequestHandler.isSet(columnOperationFieldName) and httpGetRequestHandler.isSet(columnCriteriaFieldName) | escape('html_attr') %}
+                    <input type="hidden" name="{{ columnOperationFieldName }}" value="{{ httpGetRequestHandler.getString(columnOperationFieldName) | escape('html_attr') }}">
+                    <input type="hidden" name="{{ columnCriteriaFieldName }}" value="{{ httpGetRequestHandler.getString(columnCriteriaFieldName) | escape('html_attr') }}">
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+
+        {# START: PAGING #}
+
+        {% set pagingCurrentPageFieldName = "d" ~ dataGridId ~ "cp" %}
+        {% set pagingEntriesPerPageFieldName = "d" ~ dataGridId ~ "epp" %}
+        {% if httpGetRequestHandler.isSet(pagingCurrentPageFieldName) %}
+            <input type="hidden" name="{{ pagingCurrentPageFieldName }}" value="{{ httpGetRequestHandler.getString(pagingCurrentPageFieldName) | escape('html_attr') }}">
+        {% endif %}
+        {% if httpGetRequestHandler.isSet(pagingEntriesPerPageFieldName) %}
+            <input type="hidden" name="{{ pagingEntriesPerPageFieldName }}" value="{{ httpGetRequestHandler.getString(pagingEntriesPerPageFieldName) | escape('html_attr') }}">
+        {% endif %}
+
+        {# END: PAGING #}
+    </form>
+
+    {% include 'OmDataGridFilterDialog.twig' %}
+
+{% endif %}

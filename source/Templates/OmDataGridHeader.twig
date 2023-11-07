@@ -1,0 +1,37 @@
+{% set searchQueryFieldName = "d" ~ dataGridId ~ "q" %}
+{% set specialFilterFieldName = "d" ~ dataGridId ~ "sf" %}
+{% set currentSearchQuery = httpGetRequestHandler.isSet(searchQueryFieldName) ? httpGetRequestHandler.getString(searchQueryFieldName) : "" %}
+{% set currentSpecialFilter = httpGetRequestHandler.isSet(specialFilterFieldName) ? httpGetRequestHandler.getString(specialFilterFieldName) : "" %}
+
+<div class="data-grid__header row mt-4 mb-4">
+    <div class="col-md-6 d-flex align-items-center">
+        <div>
+            {% if isFilterActive %}
+                <strong>Gefundene Einträge:</strong> {{ dataSource.totalCount }}
+                (<a role="button" data-data-grid-id="{{ dataGridId }}" class="data-grid__header__reset-filter-button">Filter zurücksetzen</a>)
+            {% else %}
+                <strong>Anzahl Einträge:</strong> {{ dataSource.totalCount }}
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-6 d-flex">
+        {% if gridDefinition.specialFilters != null %}
+            <div class="input-group">
+                <span class="input-group-text">Filter:</span>
+                <select class="form-control data-grid__header__special-filter-field form-control" placeholder="Filter auswählen" aria-label="Speziellen Filter auf Tabelle anwenden">
+                    <option value="">Keiner</option>
+                    {% for specialFilter in gridDefinition.specialFilters %}
+                        <option value="{{ loop.index }}"{{ currentSpecialFilter == loop.index ? ' selected="selected"' : '' }}>{{ specialFilter.caption }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+        {% if gridDefinition.isSearchEnabled %}
+            <div class="input-group ms-3">
+                <input type="search" class="form-control data-grid__header__search-field form-control" placeholder="Tabelle durchsuchen" aria-label="Tabelle durchsuchen"
+                       value="{{ currentSearchQuery }}">
+                <button class="btn btn-outline-secondary data-grid__header__search-button btn btn-outline-secondary" type="button">Suchen</button>
+            </div>
+        {% endif %}
+    </div>
+</div>

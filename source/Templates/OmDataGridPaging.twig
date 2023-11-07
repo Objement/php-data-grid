@@ -1,0 +1,83 @@
+{% set currentPageFieldName = "d" ~ dataGridId ~ "cp" %}
+
+{% set entriesPerPageFieldName = "d" ~ dataGridId ~ "epp" %}
+{% set currentEntriesPerPage = httpGetRequestHandler.isSet(entriesPerPageFieldName) ? httpGetRequestHandler.getInt(entriesPerPageFieldName) : pagingDefaultEntriesPerPageOptionIndex %}
+
+{% set linkToFirstPageDisabled = paging.currentPage <= 1 %}
+{% set linkBackDisabled = paging.currentPage - 1 < 1 %}
+{% set linkNextDisabled = paging.currentPage + 1 > paging.totalPages %}
+{% set linkToLastPageDisabled = paging.currentPage >= paging.totalPages %}
+
+<div class="d-flex justify-content-center justify-content-md-between mb-2">
+    <nav aria-label="Seiten-Navigation">
+        <ul class="pagination box box--inline-block box--shadow box--border-rounded-all mb-0 d-flex">
+            <li class="page-item{{ linkToFirstPageDisabled ? ' disabled' : '' }}">
+                <a class="page-link"
+                   href="{{ linkToFirstPageDisabled ? '#' : getCurrentUrlWithAdditionalParameters(currentPageFieldName ~ '=1') }}"
+                        {{ linkToFirstPageDisabled ? 'aria-disabled="true" onclick="return false;"' : '' }}
+                   aria-label="Erste Seite">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Erste Seite</span>
+                </a>
+            </li>
+            <li class="page-item{{ linkBackDisabled ? ' disabled' : '' }}">
+                <a class="page-link"
+                   href="{{ linkBackDisabled ? '#' : getCurrentUrlWithAdditionalParameters(currentPageFieldName ~ '=' ~ (paging.currentPage - 1)) }}"
+                        {{ linkBackDisabled ? 'aria-disabled="true" onclick="return false;"' : '' }}
+                   aria-label="Vorherige Seite">
+                    <span aria-hidden="true">&lsaquo;</span>
+                    <span class="sr-only">Vorherige Seite</span>
+                </a>
+            </li>
+            {% set pagingStart = paging.currentPage ? paging.currentPage - 3 : 1 %}
+            {% set pagingEndAdd = pagingStart < 1 ? (pagingStart*-1) : 0 %}
+            {% set pagingStart = pagingStart < 1 ? 1 : pagingStart %}
+            {% set pagingEnd = (paging.currentPage ? paging.currentPage + 3 : pagingStart + 6) + pagingEndAdd %}
+            {% set pagingEnd = pagingEnd > paging.totalPages ? paging.totalPages : pagingEnd %}
+            {% set pagingStart = pagingEnd - pagingStart < 6 ? pagingStart - (6 - (pagingEnd - pagingStart)) : pagingStart %}
+            {% set pagingStart = pagingStart < 1 ? 1 : pagingStart %}
+            {% for pageNumber in pagingStart..pagingEnd %}
+                <li class="page-item{{ pageNumber == paging.currentPage ? ' active' : '' }}">
+                    <a class="page-link{{ pageNumber == paging.currentPage ? ' active disabled' : '' }}"
+                       href="{{ getCurrentUrlWithAdditionalParameters(currentPageFieldName ~ '=' ~ pageNumber) }}">{{ pageNumber }}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item{{ linkNextDisabled ? ' disabled' : '' }}">
+                <a class="page-link"
+                   href="{{ linkNextDisabled ? '#' : getCurrentUrlWithAdditionalParameters(currentPageFieldName ~ '=' ~ (paging.currentPage + 1)) }}"
+                        {{ linkNextDisabled ? 'aria-disabled="true" onclick="return false;"' : '' }}
+                   aria-label="Nächste Seite">
+                    <span aria-hidden="true">&rsaquo;</span>
+                    <span class="sr-only">Nächste Seite</span>
+                </a>
+            </li>
+            <li class="page-item{{ linkToLastPageDisabled ? ' disabled' : '' }}">
+                <a class="page-link"
+                   href="{{ linkToLastPageDisabled ? '#' : getCurrentUrlWithAdditionalParameters(currentPageFieldName ~ '=' ~ paging.totalPages) }}"
+                        {{ linkToLastPageDisabled ? 'aria-disabled="true" onclick="return false;"' : '' }}
+                   aria-label="Letzte Seite">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Letzte Seite</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="d-flex flex-row justify-content-center align-items-center">
+        {% if optionsTemplate is defined %}
+            {{ optionsTemplate }}
+        {% endif %}
+        <div class="d-none d-md-flex flex-row justify-content-center align-items-center ml-2">
+            {% if gridDefinition.isPagingEnabled %}
+                <div class="input-group w-auto">
+                    <span class="input-group-text">Einträge pro Seite:</span>
+                    <select class="form-control data-grid__header__entries-per-page-field form-control" placeholder="Einträge pro Seite" aria-label="Einträge pro Seite">
+                        {% for option in pagingEntriesPerPageOptions %}
+                            <option{{ currentEntriesPerPage == loop.index0 ? ' selected="selected"' : '' }}
+                                    value="{{ loop.index0 }}">{{ option == 10000 ? 'Alle' : option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

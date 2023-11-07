@@ -1,0 +1,51 @@
+<template id="dataGrid{{ dataGridId }}FilterDialogTemplate">
+    <div class="data-grid__header-cell__filter"
+         style="width: 400px; position: absolute; background: white;box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19) !important; border: 1px grey solid;">
+
+        <div class="p-2 py-1" style="background: #e7e7e7; font-size: 1.3em; border-bottom: 1px grey solid;">Feld-Filter aktivieren</div>
+
+        <div class="p-2">
+            <div class="data-grid__header-cell__filter__filter-fields mb-3"></div>
+
+            <div class="d-flex justify-content-end">
+                <button type="button" class="data-grid__header-cell__filter__cancel-button btn btn-secondary me-2">Abbrechen</button>
+                <button type="button" class="data-grid__header-cell__filter__add-button btn btn-primary">Anwenden
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="dataGrid{{ dataGridId }}FilterDialogTemplateFilterText">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="filterOperation" class="form-label">Operation</label>
+            <select class="data-grid__header-cell__filter__operation-field form-select">
+                <option value="contains">Beinhaltet</option>
+                <option value="equals">Ist gleich</option>
+                <option value="starts">Beginnt mit</option>
+                <option value="ends">Endet mit</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="filterCriteria" class="form-label">Kriterium</label>
+            <input type="text" class="data-grid__header-cell__filter__criteria-field form-control" value="">
+        </div>
+    </div>
+</template>
+
+<template id="dataGrid{{ dataGridId }}FilterDialogTemplateFilterDate">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="filterOperation" class="form-label">Operation</label>
+            <select class="data-grid__header-cell__filter__operation-field form-select">
+                <option value="contains">Ist gleich</option>
+            </select>
+        </div>
+        <div class="col-md-6 flex-column">
+            <label for="filterCriteria" class="form-label">Kriterium</label>
+            <input type="date" class="data-grid__header-cell__filter__criteria-field form-control" value="">
+            <a class="small" role="button" href="javascript:void(0)" onclick="if (this.parentNode.querySelector('input').type === 'date') { this.innerText = 'Datumsauswahl'; this.parentNode.querySelector('input').type = 'text'; } else { this.innerText = 'Manuelle Eingabe'; this.parentNode.querySelector('input').type = 'date'; }">Manuelle Eingabe</a>
+        </div>
+    </div>
+</template>
