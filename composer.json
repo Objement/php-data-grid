@@ -1,5 +1,5 @@
 {
-  "name": "objement/php-mvc-base-data-grid-module",
+  "name": "objement/php-data-grid",
   "description": "PHP server side rendered data grid with paging, filter and sorting.",
   "minimum-stability": "dev",
   "license": "BSD-3-Clause",
