@@ -20,7 +20,7 @@ class OmDataGridRendererTwig implements OmDataGridRendererInterface
     /**
      * DataGridTwigRenderer constructor.
      */
-    public function __construct(?string $customTemplatePath)
+    public function __construct(?string $customTemplatePath=null)
     {
         $this->twig = new Environment(new FilesystemLoader($customTemplatePath ?? __DIR__.DIRECTORY_SEPARATOR.'Templates'), [
             'debug' => false,
