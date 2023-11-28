@@ -4,9 +4,9 @@
 namespace Objement\OmPhpDataGrid\RowOptions;
 
 
+use Closure;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridRowOptionConfirmationOptionsInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridRowOptionInterface;
-use Closure;
 
 class OmDataGridLinkRowOption implements OmDataGridRowOptionInterface
 {

@@ -2,8 +2,8 @@
 
 namespace Objement\OmPhpDataGrid\RowOptions;
 
-use Objement\OmPhpDataGrid\Interfaces\OmDataGridRowOptionConfirmationOptionsInterface;
 use Closure;
+use Objement\OmPhpDataGrid\Interfaces\OmDataGridRowOptionConfirmationOptionsInterface;
 
 class OmDataGridRowOptionConfirmationOptions implements OmDataGridRowOptionConfirmationOptionsInterface
 {

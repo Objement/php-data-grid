@@ -2,8 +2,8 @@
 
 namespace Objement\OmPhpDataGrid\Utils;
 
-use Objement\OmPhpDataGrid\Interfaces\OmDataGridSpecialFilterInterface;
 use Closure;
+use Objement\OmPhpDataGrid\Interfaces\OmDataGridSpecialFilterInterface;
 use Objement\OmPhpUtils\Filters\FilterExpressions\OmFilterExpressionInterface;
 
 class OmDataGridSpecialFilter implements OmDataGridSpecialFilterInterface

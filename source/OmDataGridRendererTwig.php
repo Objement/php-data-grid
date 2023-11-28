@@ -7,9 +7,9 @@ use Objement\OmPhpDataGrid\Interfaces\OmDataGridDataSourceInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridDefinitionInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridRendererInterface;
 use Objement\OmPhpDataGrid\Utils\OmDataGridHttpGetParameterNames;
+use Objement\OmPhpUtils\Filters\OmFilterQueryInterface;
 use Objement\OmPhpUtils\HttpRequests\OmRequestHandler;
 use Objement\OmPhpUtils\Paging\OmPagingHelper;
-use Objement\OmPhpUtils\Filters\OmFilterQueryInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

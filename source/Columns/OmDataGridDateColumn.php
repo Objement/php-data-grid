@@ -4,8 +4,8 @@
 namespace Objement\OmPhpDataGrid\Columns;
 
 
-use Objement\OmPhpDataGrid\Interfaces\OmDataGridColumnInterface;
 use DateTime;
+use Objement\OmPhpDataGrid\Interfaces\OmDataGridColumnInterface;
 
 class OmDataGridDateColumn extends OmDataGridColumnBase implements OmDataGridColumnInterface
 {
