@@ -26,8 +26,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Objement\\OmPhpDataGrid\\": "source/",
-      "Objement\\OmPhpDataGridTests\\": "tests/"
+      "Objement\\OmPhpDataGrid\\": "./source/",
+      "Objement\\OmPhpDataGridTests\\": "./tests/"
     }
   },
   "scripts": {
