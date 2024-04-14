@@ -11,7 +11,7 @@ use Objement\OmPhpDataGrid\Utils\OmDataGridHttpGetToOmDataGridFilterAdapter;
 
 class OmDataGrid
 {
-    private static $lastDataGridId = 0;
+    private static int $lastDataGridId = 0;
 
     private OmDataGridDataSourceInterface $dataSource;
     private OmDataGridRendererInterface $renderer;
@@ -24,14 +24,14 @@ class OmDataGrid
      */
     public function __construct(
         OmDataGridDataSourceInterface $dataSource,
-        OmDataGridRendererInterface   $renderer,
-        OmDataGridDefinitionInterface $gridDefinition
+        OmDataGridDefinitionInterface $gridDefinition,
+        ?OmDataGridRendererInterface  $renderer = null
     )
     {
         $this->dataGridId = self::$lastDataGridId++;
         $this->dataSource = $dataSource;
-        $this->renderer = $renderer;
         $this->gridDefinition = $gridDefinition;
+        $this->renderer = $renderer ?? new OmDataGridRendererTwig();
 
         $this->setFilterAdapter(new OmDataGridHttpGetToOmDataGridFilterAdapter($this->dataGridId, $this->gridDefinition));
     }

@@ -5,6 +5,7 @@ namespace Objement\OmPhpDataGrid\Utils;
 use DateTime;
 use Exception;
 use Objement\OmPhpDataGrid\Exceptions\OmDataGridOperationNotFoundException;
+use Objement\OmPhpDataGrid\Interfaces\OmDataGridColumnInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridDefinitionInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridFilterAdapterInterface;
 use Objement\OmPhpUtils\Filters\FilterExpressions\OmAndFilterExpressionGroup;
