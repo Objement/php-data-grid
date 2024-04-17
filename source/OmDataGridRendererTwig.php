@@ -9,11 +9,11 @@ use Objement\OmPhpDataGrid\Interfaces\OmDataGridRendererInterface;
 use Objement\OmPhpDataGrid\Utils\OmDataGridHttpGetParameterNames;
 use Objement\OmPhpUtils\Filters\OmFilterQueryInterface;
 use Objement\OmPhpUtils\HttpRequests\OmRequestHandler;
+use Objement\OmPhpUtils\OmUrlUtility;
 use Objement\OmPhpUtils\Paging\OmPagingHelper;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
-use function Objement\OmPhpUtils\Functions\getCurrentUrlWithAdditionalParameters;
 
 class OmDataGridRendererTwig implements OmDataGridRendererInterface
 {
@@ -28,7 +28,7 @@ class OmDataGridRendererTwig implements OmDataGridRendererInterface
             'debug' => false,
             'strict_variables' => true
         ]);
-        $this->twig->addFunction(new TwigFunction('getCurrentUrlWithAdditionalParameters', fn($additionalQueryString) => getCurrentUrlWithAdditionalParameters($additionalQueryString)));
+        $this->twig->addFunction(new TwigFunction('getCurrentUrlWithAdditionalParameters', fn($additionalQueryString) => OmUrlUtility::getCurrentUrlWithAdditionalParameters($additionalQueryString)));
     }
 
     public function render(int $dataGridId, OmDataGridDefinitionInterface $dataGridDefinition, OmDataGridDataSourceInterface $dataSource, ?OmFilterQueryInterface $filterQuery): string

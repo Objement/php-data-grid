@@ -8,6 +8,8 @@ use Objement\OmPhpDataGrid\Exceptions\OmDataGridOperationNotFoundException;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridColumnInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridDefinitionInterface;
 use Objement\OmPhpDataGrid\Interfaces\OmDataGridFilterAdapterInterface;
+use Objement\OmPhpUtils\Exceptions\OmRequestHandlerOutOfDesiredLengthException;
+use Objement\OmPhpUtils\Exceptions\OmRequestHandlerValueNotInWhiteListException;
 use Objement\OmPhpUtils\Filters\FilterExpressions\OmAndFilterExpressionGroup;
 use Objement\OmPhpUtils\Filters\FilterExpressions\OmFilterExpressionConditionInterface;
 use Objement\OmPhpUtils\Filters\FilterExpressions\OmFilterExpressionInterface;
@@ -173,7 +175,7 @@ class OmDataGridHttpGetToOmDataGridFilterAdapter implements OmDataGridFilterAdap
     }
 
     /**
-     * @throws OmRequestHandlerOutOfDisiredLengthException
+     * @throws OmRequestHandlerOutOfDesiredLengthException
      * @throws OmRequestHandlerValueNotInWhiteListException
      */
     private function getColumnFilterOperation(int $columnIndex, OmDataGridColumnInterface $column): ?string
@@ -186,7 +188,7 @@ class OmDataGridHttpGetToOmDataGridFilterAdapter implements OmDataGridFilterAdap
     }
 
     /**
-     * @throws OmRequestHandlerOutOfDisiredLengthException
+     * @throws OmRequestHandlerOutOfDesiredLengthException
      */
     private function getColumnFilterCriteria(int $columnIndex, OmDataGridColumnInterface $column): string
     {
